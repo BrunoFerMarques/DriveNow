@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { useAuth } from '@/src/context/AuthProvider';
+import { useAuth } from '@/app/src/context/AuthProvider';
 import { useRouter } from 'next/navigation';
 
 interface Car {
@@ -22,7 +22,7 @@ export default function Admin() {
     const [cars, setCars] = useState<Car[]>([]);
     const [loadingCars, setLoadingCars] = useState(true);
 
-    // Form State
+    // Form 
     const [isEditing, setIsEditing] = useState(false);
     const [editId, setEditId] = useState<string | null>(null);
     const [formData, setFormData] = useState({
@@ -39,12 +39,7 @@ export default function Admin() {
     const fetchCars = async () => {
         setLoadingCars(true);
         try {
-            // Fetch all cars (including unavailable ones ideally, but our public API filters them)
-            // For admin, we might want a specific endpoint or just filter client-side if the API returns all.
-            // Current /api/cars returns only available ones. 
-            // Let's assume we need to modify /api/cars to allow admins to see all, or add a param.
-            // For now, let's use the public one and maybe miss hidden cars. 
-            // TODO: Update /api/cars to show all for admin.
+
             const res = await fetch('/api/cars?all=true');
             const data = await res.json();
             setCars(data);
@@ -158,7 +153,6 @@ export default function Admin() {
             <h1 className="text-3xl font-bold mb-8 text-neutral-900">Painel Administrativo</h1>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Form Section */}
                 <div className="lg:col-span-1">
                     <div className="bg-white border border-neutral-200 rounded-2xl p-6 shadow-lg sticky top-24">
                         <h2 className="text-xl font-bold mb-6">{isEditing ? 'Editar Veículo' : 'Novo Veículo'}</h2>
@@ -274,7 +268,6 @@ export default function Admin() {
                     </div>
                 </div>
 
-                {/* List Section */}
                 <div className="lg:col-span-2">
                     <div className="bg-white border border-neutral-200 rounded-2xl p-6 shadow-lg">
                         <h2 className="text-xl font-bold mb-6">Frota Atual</h2>

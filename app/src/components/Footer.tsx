@@ -5,7 +5,6 @@ export default function Footer() {
         <footer className="bg-neutral-900 text-white py-12 border-t border-neutral-800">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    {/* Brand */}
                     <div className="col-span-1 md:col-span-1">
                         <Link href="/" className="text-2xl font-bold tracking-tighter font-[family-name:var(--font-outfit)] mb-4 block">
                             Drive<span className="text-blue-500">Now</span>
@@ -15,7 +14,6 @@ export default function Footer() {
                         </p>
                     </div>
 
-                    {/* Links */}
                     <div>
                         <h3 className="text-lg font-bold mb-4 text-neutral-200">Navegação</h3>
                         <ul className="space-y-2 text-sm text-neutral-400">
@@ -26,7 +24,6 @@ export default function Footer() {
                         </ul>
                     </div>
 
-                    {/* Contact */}
                     <div>
                         <h3 className="text-lg font-bold mb-4 text-neutral-200">Contato</h3>
                         <ul className="space-y-2 text-sm text-neutral-400">
@@ -36,7 +33,6 @@ export default function Footer() {
                         </ul>
                     </div>
 
-                    {/* Social */}
                     <div>
                         <h3 className="text-lg font-bold mb-4 text-neutral-200">Redes Sociais</h3>
                         <div className="flex space-x-4">

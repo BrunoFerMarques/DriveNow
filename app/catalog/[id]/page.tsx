@@ -2,20 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useAuth } from '@/src/context/AuthProvider';
+import { useAuth } from '@/app/src/context/AuthProvider';
 import { Calendar, MapPin, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-
-interface Car {
-    id: string;
-    brand: string;
-    model: string;
-    year: number;
-    imageUrl?: string;
-    type: 'RENT' | 'SALE';
-    price: number;
-    available: boolean;
-}
+import { Car } from '@/app/src/models/Car';
+import { CarService } from '@/app/src/services/CarService';
 
 export default function CarDetails() {
     const { id } = useParams();
@@ -33,11 +24,11 @@ export default function CarDetails() {
 
     useEffect(() => {
         const fetchCar = async () => {
+            if (!id) return;
             try {
-                const res = await fetch(`/api/cars/${id}`);
-                if (res.ok) {
-                    const data = await res.json();
-                    setCar(data);
+                const carData = await CarService.getById(id as string);
+                if (carData) {
+                    setCar(carData);
                 } else {
                     alert('Carro não encontrado');
                     router.push('/catalog');
@@ -49,7 +40,7 @@ export default function CarDetails() {
             }
         };
 
-        if (id) fetchCar();
+        fetchCar();
     }, [id, router]);
 
     const handleRent = async () => {
@@ -71,31 +62,21 @@ export default function CarDetails() {
         }
 
         setProcessing(true);
-        try {
-            const res = await fetch('/api/transactions', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    carId: car?.id,
-                    days: Number(days),
-                    pickupLocation,
-                    startDate,
-                    paymentMethod
-                })
-            });
+        const result = await CarService.rent({
+            carId: car?.id as string,
+            days: Number(days),
+            pickupLocation,
+            startDate,
+            paymentMethod
+        });
 
-            if (res.ok) {
-                alert('Reserva realizada com sucesso!');
-                router.push('/dashboard');
-            } else {
-                const data = await res.json();
-                alert(`Erro: ${data.error}`);
-            }
-        } catch (error) {
-            alert('Falha na transação');
-        } finally {
-            setProcessing(false);
+        if (result.success) {
+            alert('Reserva realizada com sucesso!');
+            router.push('/dashboard');
+        } else {
+            alert(`Erro: ${result.error}`);
         }
+        setProcessing(false);
     };
 
     if (loading) {
@@ -108,8 +89,6 @@ export default function CarDetails() {
 
     if (!car) return null;
 
-    const displayImage = (car.imageUrl && car.imageUrl.trim() !== '') ? car.imageUrl : 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=1000';
-
     return (
         <div className="min-h-screen bg-neutral-50 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
@@ -120,11 +99,10 @@ export default function CarDetails() {
 
                 <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-neutral-200">
                     <div className="grid grid-cols-1 lg:grid-cols-2">
-                        {/* Image Section */}
                         <div className="h-96 lg:h-auto bg-neutral-100 relative">
                             <img
-                                src={displayImage}
-                                alt={`${car.brand} ${car.model}`}
+                                src={car.displayImage}
+                                alt={car.displayName}
                                 className="w-full h-full object-cover"
                             />
                         </div>
@@ -133,7 +111,7 @@ export default function CarDetails() {
                         <div className="p-8 lg:p-12">
                             <div className="mb-8">
                                 <h1 className="text-4xl font-bold text-neutral-900 mb-2 font-[family-name:var(--font-outfit)]">
-                                    {car.brand} {car.model}
+                                    {car.displayName}
                                 </h1>
                                 <div className="flex flex-wrap gap-4 text-sm text-neutral-500">
                                     <span className="bg-neutral-100 px-3 py-1 rounded-full flex items-center gap-2">
@@ -145,7 +123,7 @@ export default function CarDetails() {
                             <div className="mb-8">
                                 <p className="text-sm text-neutral-500 uppercase tracking-wide mb-1">Preço da Diária</p>
                                 <p className="text-4xl font-bold text-blue-600">
-                                    R$ {(car.price * 0.0005).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                    R$ {car.formattedPrice}
                                 </p>
                             </div>
 

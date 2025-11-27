@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/src/lib/db';
-import { comparePassword, signToken } from '@/src/lib/auth';
+import { prisma } from '@/app/src/lib/db';
+import { comparePassword, signToken } from '@/app/src/lib/auth';
 import { cookies } from 'next/headers';
 import { z } from 'zod';
 

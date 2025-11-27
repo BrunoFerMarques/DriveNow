@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { useAuth } from '@/src/context/AuthProvider';
+import { useAuth } from '@/app/src/context/AuthProvider';
 import { useRouter } from 'next/navigation';
 
 interface Transaction {

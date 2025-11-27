@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/src/lib/db';
-import { hashPassword } from '@/src/lib/auth';
+import { prisma } from '@/app/src/lib/db';
+import { hashPassword } from '@/app/src/lib/auth';
 import { z } from 'zod';
 
 const registerSchema = z.object({

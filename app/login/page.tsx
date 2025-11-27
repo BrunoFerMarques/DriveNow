@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/src/context/AuthProvider';
+import { useAuth } from '@/app/src/context/AuthProvider';
 import Link from 'next/link';
 
 export default function Login() {

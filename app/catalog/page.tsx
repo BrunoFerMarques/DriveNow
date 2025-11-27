@@ -1,20 +1,9 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import CarCard from '@/src/components/CarCard';
-
-interface Car {
-    id: string;
-    brand: string;
-    model: string;
-    year: number;
-    imageUrl?: string;
-    type: 'RENT' | 'SALE';
-    price: number;
-    available: boolean;
-    mileage?: number;
-    condition?: string;
-}
+import CarCard from '@/app/src/components/CarCard';
+import { Car } from '@/app/src/models/Car';
+import { CarService } from '@/app/src/services/CarService';
 
 export default function Catalog() {
     const [cars, setCars] = useState<Car[]>([]);
@@ -23,18 +12,9 @@ export default function Catalog() {
     useEffect(() => {
         const fetchCars = async () => {
             setLoading(true);
-            try {
-                // Fetch all cars. Since we removed sale logic, we can just fetch /api/cars
-                // or filter by type=RENT if we want to be strict, but user said "remove selling features"
-                // so we assume all cars are for rent.
-                const res = await fetch('/api/cars?type=RENT');
-                const data = await res.json();
-                setCars(data);
-            } catch (err) {
-                console.error("Falha ao buscar carros", err);
-            } finally {
-                setLoading(false);
-            }
+            const data = await CarService.getAll();
+            setCars(data);
+            setLoading(false);
         };
 
         fetchCars();
@@ -62,7 +42,7 @@ export default function Catalog() {
                     {cars.map(car => (
                         <CarCard
                             key={car.id}
-                            {...car}
+                            car={car}
                         />
                     ))}
                     {cars.length === 0 && (

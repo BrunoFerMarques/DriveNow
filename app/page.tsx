@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import CarCard from '@/src/components/CarCard';
+import CarCard from '@/app/src/components/CarCard';
 
 async function getPopularCars() {
     try {

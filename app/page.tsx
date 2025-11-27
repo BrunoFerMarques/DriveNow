@@ -1,65 +1,80 @@
-import Image from "next/image";
+import Link from 'next/link';
+import CarCard from '@/src/components/CarCard';
+
+async function getPopularCars() {
+    try {
+        const res = await fetch('http://localhost:3000/api/cars?sort=popular', { cache: 'no-store' });
+        if (!res.ok) return [];
+        const cars = await res.json();
+        return cars.slice(0, 3);
+    } catch (e) {
+        return [];
+    }
+}
+
+async function PopularCarsSection() {
+    const cars = await getPopularCars();
+
+    if (cars.length === 0) return null;
+
+    return (
+        <section className="py-24 px-4 bg-white">
+            <div className="max-w-7xl mx-auto">
+                <div className="text-center mb-16">
+                    <h2 className="text-4xl font-bold mb-4 text-neutral-900">Mais Populares</h2>
+                    <p className="text-neutral-600">Os veículos mais desejados pelos nossos clientes.</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {cars.map((car: any) => (
+                        <CarCard key={car.id} {...car} />
+                    ))}
+                </div>
+
+                <div className="mt-12 text-center">
+                    <Link href="/catalog" className="text-blue-600 font-bold hover:underline">
+                        Ver todos os veículos &rarr;
+                    </Link>
+                </div>
+            </div>
+        </section>
+    );
+}
 
 export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    return (
+        <div className="min-h-screen bg-white">
+            {/* Hero Section */}
+            <section className="relative h-[90vh] flex items-center justify-center overflow-hidden">
+                <div className="absolute inset-0 bg-neutral-900 z-0">
+                    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2800&auto=format&fit=crop')] bg-cover bg-center opacity-40" />
+                </div>
+
+                <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+                    <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 text-white font-[family-name:var(--font-outfit)] drop-shadow-lg">
+                        Dirija o Extraordinário.
+                    </h1>
+                    <p className="text-xl md:text-2xl text-neutral-200 mb-10 font-light drop-shadow-md">
+                        Alugue ou compre os veículos mais exclusivos do mundo com apenas alguns cliques.
+                    </p>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <Link
+                            href="/catalog"
+                            className="px-8 py-4 bg-white text-black rounded-full font-bold text-lg hover:bg-blue-50 hover:scale-105 transition-all shadow-lg"
+                        >
+                            Ver Frota
+                        </Link>
+                        <Link href="/register" className="px-8 py-4 bg-transparent border border-white/30 text-white rounded-full font-bold text-lg hover:bg-white/10 transition-all backdrop-blur-sm">
+                            Criar Conta
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* Popular Cars Section */}
+            <PopularCarsSection />
+
+
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+    );
 }

@@ -48,17 +48,14 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Carro indisponível' }, { status: 400 });
         }
 
-        // Enforce RENT type
         if (car.type !== 'RENT') {
-            // If we strictly only allow RENT now, we could error here, or just treat it as rent.
-            // Given user request "remove all of the selling features", we assume everything is rent.
+            
         }
 
         const startDate = new Date(startDateStr);
         const endDate = new Date(startDate);
         endDate.setDate(startDate.getDate() + days);
 
-        // Check for overlapping transactions
         const overlapping = await prisma.transaction.findFirst({
             where: {
                 carId: car.id,
@@ -79,13 +76,12 @@ export async function POST(request: Request) {
         const dailyRate = car.price * 0.0005;
         const totalValue = dailyRate * days;
 
-        // Transaction
         const transaction = await prisma.$transaction(async (tx) => {
             const t = await tx.transaction.create({
                 data: {
                     userId: session.id,
                     carId: car.id,
-                    type: 'RENT', // Force RENT
+                    type: 'RENT', 
                     startDate,
                     endDate,
                     totalValue,
@@ -94,11 +90,6 @@ export async function POST(request: Request) {
                 },
             });
 
-            // Do NOT set available = false, as we allow future bookings if dates don't overlap
-            // await tx.car.update({
-            //     where: { id: car.id },
-            //     data: { available: false },
-            // });
 
             return t;
         });

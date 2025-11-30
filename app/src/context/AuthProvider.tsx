@@ -13,7 +13,7 @@ interface User {
 interface AuthContextType {
     user: User | null;
     loading: boolean;
-    login: (token: string) => void; // Actually we rely on cookies, so just refresh
+    login: (token: string) => void; 
     logout: () => void;
     refreshSession: () => Promise<void>;
 }

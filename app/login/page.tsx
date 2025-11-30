@@ -28,7 +28,7 @@ export default function Login() {
             const data = await res.json();
 
             if (res.ok) {
-                login(data.token); // Updates context
+                login(data.token); 
                 router.push('/');
             } else {
                 setError(data.error);

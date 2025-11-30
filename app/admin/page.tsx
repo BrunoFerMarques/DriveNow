@@ -22,7 +22,6 @@ export default function Admin() {
     const [cars, setCars] = useState<Car[]>([]);
     const [loadingCars, setLoadingCars] = useState(true);
 
-    // Form 
     const [isEditing, setIsEditing] = useState(false);
     const [editId, setEditId] = useState<string | null>(null);
     const [formData, setFormData] = useState({
@@ -197,7 +196,6 @@ export default function Admin() {
                                         className="w-full bg-neutral-50 border border-neutral-300 rounded-lg px-3 py-2 text-sm"
                                     >
                                         <option value="RENT">Aluguel</option>
-                                        <option value="SALE">Venda</option>
                                     </select>
                                 </div>
                             </div>

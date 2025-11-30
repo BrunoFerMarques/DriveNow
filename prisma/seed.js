@@ -6,7 +6,6 @@ const prisma = new PrismaClient();
 async function main() {
     console.log('Seeding database...');
 
-    // Create Admin User
     const hashedPassword = await bcrypt.hash('admin123', 10);
     const admin = await prisma.user.upsert({
         where: { email: 'admin@drivenow.com' },
@@ -21,7 +20,6 @@ async function main() {
 
     console.log('Admin created:', admin.email);
 
-    // Create Cars
     const cars = [
         {
             brand: 'Toyota',

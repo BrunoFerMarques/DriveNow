@@ -10,7 +10,7 @@ interface CarCardProps {
 
 export default function CarCard({ car }: CarCardProps) {
     return (
-        <Link href={`/ catalog / ${car.id} `} className="block group relative bg-white border border-neutral-200 rounded-2xl overflow-hidden hover:border-blue-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/10">
+        <Link href={`/catalog/${car.id} `} className="block group relative bg-white border border-neutral-200 rounded-2xl overflow-hidden hover:border-blue-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/10">
             <div className="h-48 bg-neutral-100 w-full flex items-center justify-center relative overflow-hidden">
                 <img
                     src={car.displayImage}
@@ -47,5 +47,8 @@ export default function CarCard({ car }: CarCardProps) {
             </div>
         </Link>
     );
+
+
+  
 }
 

@@ -56,7 +56,7 @@ export default function Dashboard() {
 
             if (res.ok) {
                 alert('Reserva cancelada com sucesso.');
-                fetchTransactions(); // Refresh list
+                fetchTransactions(); 
             } else {
                 const data = await res.json();
                 alert(`Erro ao cancelar: ${data.error}`);

@@ -4,8 +4,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRES_PRISMA_URL") // Uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // Uses direct connection
+  url      = env("POSTGRES_PRISMA_URL") 
+  directUrl = env("POSTGRES_URL_NON_POOLING") 
 }
 
 model User {
@@ -13,7 +13,7 @@ model User {
   name      String
   email     String   @unique
   password  String
-  role      String   @default("CLIENT") // CLIENT, ADMIN
+  role      String   @default("CLIENT") 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -25,8 +25,8 @@ model Car {
   brand       String
   model       String
   year        Int
-  type        String   @default("RENT") // RENT, SALE
-  price       Float    // Daily rate or Sale price
+  type        String   @default("RENT") 
+  price       Float    
   available   Boolean  @default(true)
   imageUrl    String?
   createdAt   DateTime @default(now())
@@ -39,7 +39,7 @@ model Transaction {
   id         String   @id @default(uuid())
   userId     String
   carId      String
-  type       String   // RENT, SALE
+  type       String   
   startDate  DateTime?
   endDate    DateTime?
   totalValue Float

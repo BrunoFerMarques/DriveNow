@@ -98,7 +98,7 @@ export default function CarDetails() {
                 </Link>
 
                 <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-neutral-200">
-                    <div className="grid grid-cols-1 lg:grid-cols-2">
+                    <div className="grid grid-cols-1 ">
                         <div className="h-96 lg:h-auto bg-neutral-100 relative">
                             <img
                                 src={car.displayImage}
@@ -107,7 +107,6 @@ export default function CarDetails() {
                             />
                         </div>
 
-                        {/* Details Section */}
                         <div className="p-8 lg:p-12">
                             <div className="mb-8">
                                 <h1 className="text-4xl font-bold text-neutral-900 mb-2 font-[family-name:var(--font-outfit)]">
@@ -190,7 +189,7 @@ export default function CarDetails() {
                                             <div className="bg-neutral-100 p-4 rounded-xl text-center">
                                                 <p className="text-sm text-neutral-500 mb-2">Escaneie o QR Code ou use a chave abaixo</p>
                                                 <div className="w-32 h-32 bg-white mx-auto mb-2 flex items-center justify-center border border-neutral-200 rounded-lg">
-                                                    <span className="text-xs text-neutral-400">QR Code Mock</span>
+                                                    <span className="text-xs text-neutral-400">QR Code</span>
                                                 </div>
                                                 <p className="font-mono text-sm bg-white py-2 px-4 rounded border border-neutral-200 inline-block">
                                                     00020126580014BR.GOV.BCB.PIX0136123e4567-e89b-12d3-a456-426614174000

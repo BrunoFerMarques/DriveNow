@@ -10,7 +10,7 @@ export default function Footer() {
                             Drive<span className="text-blue-500">Now</span>
                         </Link>
                         <p className="text-neutral-400 text-sm">
-                            A plataforma líder em aluguel e venda de veículos premium. Experiência, qualidade e exclusividade.
+                            A plataforma líder em aluguel de veículos premium. Experiência, qualidade e exclusividade.
                         </p>
                     </div>
 

@@ -1,21 +1,26 @@
+"use client"
 import Link from 'next/link';
 import CarCard from '@/app/src/components/CarCard';
+import { CarService } from './src/services/CarService';
+import { useEffect, useState } from 'react';
+import { Car } from './src/models/Car';
 
-async function getPopularCars() {
-    try {
-        const res = await fetch('http://localhost:3000/api/cars?sort=popular', { cache: 'no-store' });
-        if (!res.ok) return [];
-        const cars = await res.json();
-        return cars.slice(0, 3);
-    } catch (e) {
-        return [];
-    }
-}
 
-async function PopularCarsSection() {
-    const cars = await getPopularCars();
+function PopularCarsSection() {
+    const [cars, setCars] = useState<Car[]>([]);
+    const [loading, setLoading] = useState(true);
 
-    if (cars.length === 0) return null;
+    useEffect(() => {
+        const fetchCars = async () => {
+            setLoading(true);
+            const data = await CarService.getAllByPopularity();
+            setCars(            data.slice(0, 3));
+            setLoading(false);
+        };
+
+        fetchCars();
+    }, []);
+
 
     return (
         <section className="py-24 px-4 bg-white">
@@ -27,7 +32,7 @@ async function PopularCarsSection() {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {cars.map((car: any) => (
-                        <CarCard key={car.id} {...car} />
+                        <CarCard key={car.id} car={car} />
                     ))}
                 </div>
 
@@ -44,7 +49,6 @@ async function PopularCarsSection() {
 export default function Home() {
     return (
         <div className="min-h-screen bg-white">
-            {/* Hero Section */}
             <section className="relative h-[90vh] flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 bg-neutral-900 z-0">
                     <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2800&auto=format&fit=crop')] bg-cover bg-center opacity-40" />
@@ -71,7 +75,6 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* Popular Cars Section */}
             <PopularCarsSection />
 
 

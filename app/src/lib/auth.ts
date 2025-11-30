@@ -32,7 +32,6 @@ export const getSession = async () => {
         return verifyToken(token) as { id: string; email: string; role: string } | null;
     }
 
-    // Check for Authorization header
     const { headers } = await import('next/headers');
     const headersList = await headers();
     const authHeader = headersList.get('Authorization');

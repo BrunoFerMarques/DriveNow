@@ -22,7 +22,6 @@ export async function DELETE(
             return NextResponse.json({ error: 'Transaction not found' }, { status: 404 });
         }
 
-        // Only allow user to delete their own transaction, or ADMIN
         if (transaction.userId !== session.id && session.role !== 'ADMIN') {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
         }

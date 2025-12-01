@@ -1,13 +1,10 @@
 import { Car, ICarData } from '../models/Car';
 
 export class CarService {
-    private static baseUrl = process.env.NEXT_PUBLIC_BASE_URL+'/api/cars';
 
     static async getAll(): Promise<Car[]> {
-        try {           
-            console.log(process.env.NEXT_PUBLIC_BASE_URL)
-            console.log('Fetching all cars from', `${this.baseUrl}?type=RENT`);
-            const res = await fetch(`${this.baseUrl}?type=RENT`);
+        try {
+            const res = await fetch(`/api/cars?type=RENT`, { cache: "no-store" });
             if (!res.ok) throw new Error('Failed to fetch cars');
             const data: ICarData[] = await res.json();
             return data.map(item => new Car(item));
@@ -19,7 +16,7 @@ export class CarService {
 
     static async getAllByPopularity(): Promise<Car[]> {
         try {
-            const res = await fetch(`${this.baseUrl}?sort=popular`);
+            const res = await fetch(`/api/cars?sort=popular`, { cache: "no-store" });
             if (!res.ok) throw new Error('Failed to fetch cars by popularity');
             const data: ICarData[] = await res.json();
             return data.map(item => new Car(item));
@@ -28,9 +25,10 @@ export class CarService {
             return [];
         }
     }
+
     static async getById(id: string): Promise<Car | null> {
         try {
-            const res = await fetch(`${this.baseUrl}/${id}`);
+            const res = await fetch(`/api/cars/${id}`, { cache: "no-store" });
             if (!res.ok) return null;
             const data: ICarData = await res.json();
             return new Car(data);
@@ -47,8 +45,9 @@ export class CarService {
         startDate: string;
         paymentMethod: string;
     }): Promise<{ success: boolean; error?: string }> {
+
         try {
-            const res = await fetch('/api/transactions', {
+            const res = await fetch(`/api/transactions`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(transactionData)

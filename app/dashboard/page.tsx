@@ -90,27 +90,6 @@ export default function Dashboard() {
     }
   };
 
-  // Excluir visita
-  const handleDeleteVisit = async (id: string) => {
-    if (!confirm('Deseja realmente excluir esta visita?')) return;
-    
-    try {
-      const res = await fetch(`/api/visits/${id}`, { method: 'DELETE' });
-      if (res.ok) {
-        alert('Visita excluída com sucesso!');
-        setVisits(prev => prev.filter(v => v.id !== id));
-      } else {
-        const data = await res.json();
-        alert(`Erro: ${data.error}`);
-      }
-    } catch (err) {
-      console.error(err);
-      alert('Falha ao excluir visita.');
-    }
-  };
-
-  if (authLoading || !user) return null;
-
   return (
     <div className="min-h-screen p-8 md:p-12 max-w-7xl mx-auto">
       {/* ------------------ TRANSACTIONS ------------------ */}

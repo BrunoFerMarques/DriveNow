@@ -90,6 +90,25 @@ export default function Dashboard() {
     }
   };
 
+
+ const handleDeleteVisit = async (id: string) => {
+    if (!confirm('Deseja realmente excluir esta visita?')) return;
+
+    try {
+      const res = await fetch(`/api/visits/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        alert('Visita excluída com sucesso!');
+        setVisits(prev => prev.filter(v => v.id !== id));
+      } else {
+        const data = await res.json();
+        alert(`Erro: ${data.error}`);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Falha ao excluir visita.');
+    }
+  };
+
   return (
     <div className="min-h-screen p-8 md:p-12 max-w-7xl mx-auto">
       {/* ------------------ TRANSACTIONS ------------------ */}
@@ -164,12 +183,13 @@ export default function Dashboard() {
                 <div className="w-24 h-16 bg-neutral-100 rounded-lg overflow-hidden flex-shrink-0">
                   <img src={displayImage} alt={v.car.model} className="w-full h-full object-cover" />
                 </div>
-
+                
                 <div className="flex-grow">
                   <h3 className="font-bold text-lg text-neutral-900">{v.car.brand} {v.car.model}</h3>
                   <p className="text-sm text-neutral-500">
                     {new Date(v.date).toLocaleDateString('pt-BR')} • {new Date(v.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                   </p>
+                  <button onClick={() => handleDeleteVisit(v.id)} className="ml-auto mt-2 md:mt-0 bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700 transition-all" > Excluir </button>
                 </div>
               </div>
             );

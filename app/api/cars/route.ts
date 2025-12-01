@@ -30,7 +30,7 @@ export async function GET(request: Request) {
             where.available = true;
         }
 
-        if (type) where.type = type;
+
         if (brand) where.brand = { contains: brand };
 
         const sort = searchParams.get('sort');

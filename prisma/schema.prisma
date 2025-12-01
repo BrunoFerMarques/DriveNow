@@ -3,9 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("POSTGRES_PRISMA_URL") 
-  directUrl = env("POSTGRES_URL_NON_POOLING") 
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model User {
@@ -13,39 +13,52 @@ model User {
   name      String
   email     String   @unique
   password  String
-  role      String   @default("CLIENT") 
+  role      String   @default("CLIENT")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  visits       CarVisit[]
   transactions Transaction[]
 }
 
 model Car {
-  id          String   @id @default(uuid())
-  brand       String
-  model       String
-  year        Int
-  type        String   @default("RENT") 
-  price       Float    
-  available   Boolean  @default(true)
-  imageUrl    String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(uuid())
+  brand     String
+  model     String
+  year      Int
+  type      String   @default("RENT")
+  price     Float
+  available Boolean  @default(true)
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   transactions Transaction[]
+  visits       CarVisit[]
 }
 
 model Transaction {
-  id         String   @id @default(uuid())
-  userId     String
-  carId      String
-  type       String   
-  startDate  DateTime?
-  endDate    DateTime?
-  totalValue Float
+  id             String    @id @default(uuid())
+  userId         String
+  carId          String
+  type           String
+  startDate      DateTime?
+  endDate        DateTime?
+  totalValue     Float
   pickupLocation String?
-  paymentMethod String?
-  createdAt  DateTime @default(now())
+  paymentMethod  String?
+  createdAt      DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  car  Car  @relation(fields: [carId], references: [id])
+}
+
+model CarVisit {
+  id        String   @id @default(uuid())
+  userId    String
+  carId     String
+  date      DateTime
+  createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
   car  Car  @relation(fields: [carId], references: [id])

@@ -59,3 +59,22 @@ export async function PUT(
         return NextResponse.json({ error: 'Falha ao atualizar carro' }, { status: 500 });
     }
 }
+
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const session = await getSession();
+  if (!session || session.role !== 'ADMIN') {
+    return NextResponse.json({ error: 'Não autorizado' }, { status: 403 });
+  }
+
+  const id = (await params).id;
+  try {
+    await prisma.car.delete({ where: { id } });
+    return NextResponse.json({ message: 'Veículo excluído com sucesso' });
+  } catch (error) {
+    return NextResponse.json({ error: 'Falha ao excluir carro' }, { status: 500 });
+  }
+}
